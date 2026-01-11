@@ -132,3 +132,12 @@ REST_FRAMEWORK = {
 
 # CORS Settings
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Celery Configuration
+CELERY_BROKER_URL = 'amqp://localhost'  # Default RabbitMQ address
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+# Email Configuration (Example for testing)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'admin@alxtravel.com'
