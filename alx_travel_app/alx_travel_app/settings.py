@@ -50,7 +50,6 @@ MIDDLEWARE = [
 
 DATABASES = {
     'default': dj_database_url.config(
-        # This looks for the DATABASE_URL environment variable automatically
         default=os.environ.get('DATABASE_URL'),
         conn_max_age=600,
         ssl_require=True if not DEBUG else False
