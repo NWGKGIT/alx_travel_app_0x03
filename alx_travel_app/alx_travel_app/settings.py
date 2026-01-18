@@ -3,7 +3,6 @@ import dj_database_url
 from pathlib import Path
 import environ
 
-# Initialize environment variables
 env = environ.Env(DEBUG=(bool, False))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,9 +11,7 @@ env_file = os.path.join(BASE_DIR, ".env")
 if os.path.exists(env_file):
     environ.Env.read_env(env_file)
 
-# SECURITY: Use a real key on Render, never the default.
 SECRET_KEY = env("SECRET_KEY")
-
 DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env.list(
@@ -39,7 +36,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # ADD THIS (must be here)
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -47,6 +44,25 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+ROOT_URLCONF = 'alx_travel_app.urls' 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = 'alx_travel_app.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
@@ -56,7 +72,6 @@ DATABASES = {
     )
 }
 
-# Static Files - Required for Swagger to work on Render
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -70,3 +85,7 @@ CORS_ALLOW_ALL_ORIGINS = DEBUG
 
 # Celery Configuration
 CELERY_BROKER_URL = env("CLOUDAMQP_URL", default="amqp://localhost")
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
